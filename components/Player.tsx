@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+
+declare const Plyr: any;
 
 interface PlayerProps {
   src: string;
@@ -6,17 +8,28 @@ interface PlayerProps {
 }
 
 export const PlayerComponent: React.FC<PlayerProps> = ({ src, title }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      const player = new Plyr(videoRef.current, {
+        title: title,
+        autoplay: true,
+        playsinline: true,
+        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
+      });
+    }
+  }, [title]);
+
   return (
-    <media-player
-      class="w-full aspect-video"
+    <video
+      ref={videoRef}
+      className="w-full aspect-video"
       src={src}
-      playsinline
-      autoplay
+      playsInline
+      autoPlay
       controls
       title={title}
-    >
-      <media-provider></media-provider>
-      <media-video-layout></media-video-layout>
-    </media-player>
+    ></video>
   );
 };
