@@ -1,23 +1,48 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
+import { Player } from 'video.js';
 
 interface PlayerProps {
   src: string;
 }
 
-export const Player: React.FC<PlayerProps> = ({ src }) => {
+export const PlayerComponent: React.FC<PlayerProps> = ({ src }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<Player | null>(null);
+
+  useEffect(() => {
+    if (!playerRef.current) {
+      const videoElement = document.createElement("video");
+      videoElement.className = "video-js vjs-big-play-centered";
+      containerRef.current?.appendChild(videoElement);
+
+      const player = videojs(videoElement, {
+        autoplay: true,
+        controls: true,
+        fluid: true,
+        sources: [{ src, type: 'video/mp4' }],
+      });
+      playerRef.current = player;
+    }
+
+    return () => {
+      if (playerRef.current && !playerRef.current.isDisposed()) {
+        playerRef.current.dispose();
+        playerRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (playerRef.current) {
+      playerRef.current.src({ src, type: 'video/mp4' });
+    }
+  }, [src]);
+
   return (
-    <div className="relative w-full bg-black rounded-lg overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.1)] border border-neutral-800">
-      <video
-        className="w-full h-auto block"
-        controls
-        playsInline
-        preload="metadata"
-      >
-        <source src={src} type="video/mp4" />
-        <p className="p-4 text-red-500 text-center">
-          Your browser is too old to play this shit.
-        </p>
-      </video>
+    <div data-vjs-player>
+      <div ref={containerRef} />
     </div>
   );
 };

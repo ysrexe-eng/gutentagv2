@@ -1,5 +1,5 @@
 import React from 'react';
-import { Player } from './components/Player';
+import { PlayerComponent } from './components/Player';
 import { VIDEO_SRC, APP_TITLE } from './constants';
 
 const App: React.FC = () => {
@@ -13,7 +13,7 @@ const App: React.FC = () => {
         </header>
 
         <section className="w-full">
-          <Player src={VIDEO_SRC} />
+          <PlayerComponent src={VIDEO_SRC} />
         </section>
       </div>
     </main>
