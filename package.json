@@ -9,10 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/video.js": "^7.3.58",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "video.js": "^8.23.4"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

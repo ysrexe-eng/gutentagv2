@@ -13,7 +13,7 @@ const App: React.FC = () => {
         </header>
 
         <section className="w-full">
-          <PlayerComponent src={VIDEO_SRC} />
+          <PlayerComponent src={VIDEO_SRC} title={APP_TITLE} />
         </section>
       </div>
     </main>

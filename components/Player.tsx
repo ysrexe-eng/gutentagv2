@@ -1,48 +1,22 @@
-import React, { useEffect, useRef } from 'react';
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
-import { Player } from 'video.js';
+import React from 'react';
 
 interface PlayerProps {
   src: string;
+  title?: string;
 }
 
-export const PlayerComponent: React.FC<PlayerProps> = ({ src }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<Player | null>(null);
-
-  useEffect(() => {
-    if (!playerRef.current) {
-      const videoElement = document.createElement("video");
-      videoElement.className = "video-js vjs-big-play-centered";
-      containerRef.current?.appendChild(videoElement);
-
-      const player = videojs(videoElement, {
-        autoplay: true,
-        controls: true,
-        fluid: true,
-        sources: [{ src, type: 'video/mp4' }],
-      });
-      playerRef.current = player;
-    }
-
-    return () => {
-      if (playerRef.current && !playerRef.current.isDisposed()) {
-        playerRef.current.dispose();
-        playerRef.current = null;
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current.src({ src, type: 'video/mp4' });
-    }
-  }, [src]);
-
+export const PlayerComponent: React.FC<PlayerProps> = ({ src, title }) => {
   return (
-    <div data-vjs-player>
-      <div ref={containerRef} />
-    </div>
+    <media-player
+      class="w-full aspect-video"
+      src={src}
+      playsinline
+      autoplay
+      controls
+      title={title}
+    >
+      <media-provider></media-provider>
+      <media-video-layout></media-video-layout>
+    </media-player>
   );
 };
